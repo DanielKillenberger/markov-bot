@@ -23,7 +23,10 @@ with open(path + model_string + suffix) as model_file:
 
 
 def schnur(bot, update):
-    bot.sendMessage(chat_id=update.message.chat_id, text=model.make_sentence())
+    answer = None
+    while answer is None:
+        answer = model.make_sentence()
+    bot.sendMessage(chat_id=update.message.chat_id, text=answer)
 
 
 start_handler = CommandHandler('schnur', schnur)
