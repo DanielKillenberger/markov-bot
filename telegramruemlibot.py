@@ -29,7 +29,12 @@ def schnur(bot, update):
     bot.sendMessage(chat_id=update.message.chat_id, text=answer)
 
 
-start_handler = CommandHandler('schnur', schnur)
+def start(bot, update):
+    bot.send_message(chat_id=update.message.chat_id, text='Schriib /schnur und ich wird dr rümli gemäss antworte!')
+
+start_handler = CommandHandler('start', start)
+schnur_handler = CommandHandler('schnur', schnur)
+dispatcher.add_handler(schnur_handler)
 dispatcher.add_handler(start_handler)
 
 updater.start_polling()
