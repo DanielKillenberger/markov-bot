@@ -11,17 +11,20 @@ reddit = praw.Reddit(user_agent=str(credentials['user_agent']),
                      client_secret=str(credentials['client_secret']))
 
 
-subreddit_string = str(sys.argv[1])
-subreddit = reddit.subreddit(subreddit_string)
+subreddit_strings = list(map(lambda x: str(x), sys.argv[1:len(sys.argv)]))
+subreddits = []
+for subreddit_string in subreddit_strings:
+    subreddits.append(reddit.subreddit(subreddit_string))
 text = ""
 
-for submission in subreddit.hot():
-    text += submission.selftext
-    for comment in submission.comments:
-        text += comment.body
+for subreddit in subreddits:
+    for submission in subreddit.hot():
+        text += submission.selftext
+        for comment in submission.comments:
+            text += comment.body
 
 text_model = markovify.Text(text)
-utils.export_model(text_model, subreddit_string)
+utils.export_model(text_model, subreddit_strings[0])
 
 
 

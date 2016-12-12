@@ -25,6 +25,7 @@ var/
 *.egg
 
 credentials.json
+telegram_config.json
 models/
 .DS_Store
 *.txt
