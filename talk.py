@@ -7,4 +7,4 @@ suffix = '_model.json'
 #load model from file
 with open(path + model_string + suffix) as model_file:
     model = markovify.Text.from_json(json.load(model_file))
-print(model.make_sentence())
+print(model.make_short_sentence(140))

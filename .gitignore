@@ -29,6 +29,7 @@ telegram_config.json
 models/
 .DS_Store
 *.txt
+subreddit_ids/
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
