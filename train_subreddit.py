@@ -28,7 +28,10 @@ def initialize_subreddit_training(s):
                 i += 1
                 subreddit_ids['comments'].append(comment.id)
                 if sub.selftext != '[removed]':
-                    t += comment.body
+                    try:
+                        t += comment.body
+                    except AttributeError:
+                        print('comment has no body')
 
         pickle.dump(subreddit_ids, open(subreddit_ids_saved_path + s.display_name, "wb"))
         model = markovify.Text(t)
@@ -55,11 +58,14 @@ def update_subreddit_training(s):
                 subreddit_ids['submissions'].append(sub.id)
                 if sub.selftext != '[removed]':
                     t += sub.selftext
-            for c in sub.comments:
-                if c.id not in subreddit_ids['comments']:
-                    subreddit_ids['comments'].append(c.id)
-                    if c.body != '[removed]':
-                        t += c.body
+            for comment in sub.comments:
+                if comment.id not in subreddit_ids['comments']:
+                    subreddit_ids['comments'].append(comment.id)
+                    if comment.body != '[removed]':
+                        try:
+                            t += comment.body
+                        except AttributeError:
+                            print('comment has no body')
 
         if not t == "":
             model = markovify.Text(t)
@@ -87,4 +93,4 @@ for subreddit_string in subreddit_strings:
     subreddits.append(reddit.subreddit(subreddit_string))
 
 for subreddit in subreddits:
-    update_subreddit_training(subreddit)
+    initialize_subreddit_training(subreddit)
