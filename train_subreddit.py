@@ -11,28 +11,25 @@ models_path = 'models/'
 models_suffix = '_model.json'
 
 
-# load comment and submission ids if they exist
-# param: array of subreddit objects
-def load_subreddit_id(subreddit_string):
-    filename = subreddit_string + '_ids'
-    if os.path.isfile(filename):
-        return pickle.load(filename)
-
-    return FileNotFoundError
-
-
 def initialize_subreddit_training(s):
     if not os.path.isfile(subreddit_ids_saved_path + s.display_name):
         subreddit_ids = {'comments': [], 'submissions': []}
-        comments = s.comments(limit=1000)
         submissions = s.submissions()
         t = ""
-        for c in comments:
-            subreddit_ids['comments'].append(c.id)
-            t += c.body
+        i = 0
         for sub in submissions:
+            print(i)
+            i += 1
             subreddit_ids['submissions'].append(sub.id)
-            t += sub.selftext
+            if sub.selftext != '[removed]':
+                t += sub.selftext
+            for comment in sub.comments:
+                print(i)
+                i += 1
+                subreddit_ids['comments'].append(comment.id)
+                if sub.selftext != '[removed]':
+                    t += comment.body
+
         pickle.dump(subreddit_ids, open(subreddit_ids_saved_path + s.display_name, "wb"))
         model = markovify.Text(t)
         utils.export_model(model, 'subreddit_' + s.display_name)
@@ -48,18 +45,21 @@ def update_subreddit_training(s):
             os.path.isfile(models_path + 'subreddit_' + s.display_name + models_suffix):
 
         subreddit_ids = pickle.load(open(subreddit_ids_saved_path + s.display_name, "rb"))
-        comments = s.comments(limit=1000)
         submissions = s.submissions()
         t = ""
-        for c in comments:
-            if c.id not in subreddit_ids['comments']:
-                subreddit_ids['comments'].append(c.id)
-                t += c.body
-
+        i = 0
         for sub in submissions:
             if sub.id not in subreddit_ids['submissions']:
+                print(i)
+                i += 1
                 subreddit_ids['submissions'].append(sub.id)
-                t += sub.selftext
+                if sub.selftext != '[removed]':
+                    t += sub.selftext
+            for c in sub.comments:
+                if c.id not in subreddit_ids['comments']:
+                    subreddit_ids['comments'].append(c.id)
+                    if c.body != '[removed]':
+                        t += c.body
 
         if not t == "":
             model = markovify.Text(t)
