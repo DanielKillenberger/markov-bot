@@ -24,8 +24,8 @@ var/
 .installed.cfg
 *.egg
 
-credentials.json
-telegram_config.json
+reddit_credentials.json
+config.json
 models/
 .DS_Store
 *.txt

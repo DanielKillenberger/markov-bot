@@ -79,7 +79,7 @@ def update_subreddit_training(s):
         print('Please use initialize_subreddit_training(s) ')
 
 
-credentials = open('credentials.json').read()
+credentials = open('reddit_credentials.json').read()
 credentials = json.loads(credentials)
 
 reddit = praw.Reddit(user_agent=str(credentials['user_agent']),

@@ -2,5 +2,6 @@
   "telegram_api_token": "my api token",
   "start_string": "start",
   "start_answer": "Write /talk and i'll answer accordingly",
-  "talk_string": "talk"
+  "talk_string": "talk",
+  "talk_word_error_answer": "Can't find a sentence starting with given word."
 }
