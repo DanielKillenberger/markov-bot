@@ -1,5 +1,5 @@
 {
-  "telegram_api_token": "my api token",
+  "token": "my api token",
   "start_string": "start",
   "start_answer": "Write /talk and i'll answer accordingly",
   "talk_string": "talk",

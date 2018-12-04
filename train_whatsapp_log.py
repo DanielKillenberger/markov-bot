@@ -9,7 +9,7 @@ path = '_chat.txt'
 
 
 def main():
-    if sys.argv[1] is None:
+    if len(sys.argv) != 2:
         print('Pass model name as program argument')
         return
     model_name = sys.argv[1]
