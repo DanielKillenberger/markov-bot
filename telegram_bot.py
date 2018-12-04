@@ -48,7 +48,7 @@ def main():
         bot.send_message(chat_id=update.message.chat_id, text=config['start_answer'])
 
     def talk_word(bot, update):
-        answer = config.talk_word_error_answer
+        answer = config['talk_word_error_answer']
         temp = ''
         try:
             temp = model.make_sentence_with_start(update.message.text)
